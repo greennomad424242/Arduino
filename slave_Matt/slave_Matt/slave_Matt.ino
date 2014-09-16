@@ -51,13 +51,11 @@ int samples[NUMSAMPLES];
 
 // constants for the voltage sensing------------------------------------------------------------------
 const float referenceVolts = 5;        // the default reference on a 5-volt board
-const float R1 = 2000; // value for a maximum voltage of 10 volts
-const float R2 = 1000;
 // determine by voltage divider resistors, see text
-const float resistorFactor = 1023.0 / (R2/(R1 + R2))/10;  
+const float resistorFactor = 320;  
 
-const int batteryPin = 0;   
-const int batteryPin2 = 1;  
+const int batteryPin = 1;   
+const int batteryPin2 = 0;  
 //  LED 
 
 int red_led = 12;
@@ -144,7 +142,7 @@ void loop()
     Serial.print("  Voltage cutoff: ");
     Serial.print(voltage_cutoff);
     Serial.print("  Voltage: ");  
-   Serial.print(voltage_func(0));
+   Serial.print(voltage_func());
     Serial.print(" Time:");
     Serial.println(delta_time); 
    }
@@ -189,7 +187,7 @@ void requestEvent()
   int temp_now = (int) (temp()*10);
   output_value = String(temp_now);
   output_value += ",";
-  output_value +=String((int) (voltage_func(1)*10));  
+  output_value +=String((int) (voltage_func()*10));  
   //output_value += "|";
   //if (safe_mode == true) {  
   //    output_value += "1";
@@ -209,11 +207,10 @@ void requestEvent()
 
 
 
-float voltage_func (int pin_selected)  {
-
-   int val = analogRead(pin_selected);  // read the value from the sensor
+float voltage_func ()  {
+   int val = analogRead(1);  // read the value from the sensor
    float volts = (val / resistorFactor) * referenceVolts ; // calculate the ratio
-   voltage = volts;
+
    return volts;  // print the value in volts   
 }
 

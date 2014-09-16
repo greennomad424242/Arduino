@@ -58,7 +58,7 @@ void loop()
   send_pin_state(); 
   delay(200);
 
-  request_data(); // get temperature and voltage 
+//  request_data(); // get temperature and voltage 
   
   Serial.print("Thruster status: ");
   for  (int i = 0; i < num_pins; i++) {
@@ -106,9 +106,10 @@ void request_data (void) {
 
 
 void send_pin_state (void) {
-     
+     delay(50);
     Wire.beginTransmission(4); // transmit to device #4
     // get pin values 
+    delay(150);
     buttonState_value ="";
     // we need to get the pin values and append them to the output string 
     output_value ="<";
@@ -139,7 +140,9 @@ void send_pin_state (void) {
     output_value.toCharArray(sendStatus, 17);
     
     Wire.write(sendStatus);
+    delay(350);
     Wire.endTransmission(4);    // stop transmitting
+    delay(350);
    // Serial.print(sendStatus);
 }
 
